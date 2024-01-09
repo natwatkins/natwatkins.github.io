@@ -1,7 +1,11 @@
+
+
+
 h1 {
     font-size: 40px;
     font-style: normal;
     font-weight: 400;
     line-height: normal;
+    @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono&display=swap');
     font-family: 'IBM Plex Mono', monospace;
 }
