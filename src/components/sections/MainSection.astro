@@ -19,7 +19,7 @@ const { navLinks, myName, myBio, selectedProjects } = Astro.props;
         </h2>
       </div>
       <p
-        class='intro-bio mt-5 md:mt-8 mb-5 leading-6 md:leading-7 md:text-2xl text-slate-700 text-justify'
+        class='intro-bio mt-5 md:mt-8 mb-5 leading-6 md:leading-7 md:text-2xl text-slate-900 text-justify'
       >
         {myBio}
       </p>
@@ -27,7 +27,7 @@ const { navLinks, myName, myBio, selectedProjects } = Astro.props;
     <div
       class='projects w-[100%] md:w-[30%] md:mr-5 justify-start flex flex-col gap-5'
     >
-      <h3 class='heading text-slate-600 uppercase font-semibold ml-4'>
+      <h3 class='heading text-slate-900 uppercase font-semibold ml-4'>
         Selected Projects
       </h3>
       <SelectedProjectBox projects={selectedProjects} />

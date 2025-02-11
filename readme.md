@@ -1,7 +1,11 @@
 
-# Aether Astro Theme
+# Nat Watkins Personal Portfolio Site
 
-![Aether Theme Header Image](./screenshots/header.jpg)
+I built this site with the Aether Astro theme. Modifications are my own. 
+
+---
+
+# Aether Astro Theme
 
 Aether is a sleek, minimalist portfolio theme designed for Astro.js, perfect for those who value simplicity and speed. With a focus on clean design and efficient performance.
 
@@ -51,13 +55,6 @@ Note: Configure the `site` property in the `astro.config.mjs` file before deploy
 ![light house score](./screenshots/lh.png)
 
 Aether have a perfect lighthouse score in every aspect, giving your site a blazing fast and optimized experience.
-
-## ScreenShots
-
-![screenshot 1](./screenshots/1.png)
-![screenshot 2](./screenshots/2.png)
-![screenshot 3](./screenshots/3.png)
-![screenshot 4](./screenshots/4.png)
 
 ## License
 
