@@ -57,7 +57,7 @@ export const workExperiences = [
     organisationName: 'Nava PBC',
     position: 'Designer Researcher',
     date: '2022 - 2025',
-    info: ['Making government services effective, simple, and accessible to all.'],
+    info: ['Making government services simple, effective, and accessible to all.'],
   },
   {
     organisationName: 'Freelance',
