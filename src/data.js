@@ -28,7 +28,7 @@ export const navLinks = [
 
 export const selectedProjects = [
   { name: 'AB2D Claims Data API', link: 'https://ab2d.cms.gov' },
-  { name: 'State of NJ Unemployment Insurance Modernization', link: 'https://www.nj.gov/labor/myunemployment/help/newapp.shtml' },
+  { name: 'New Jersey Unemployment Insurance Modernization', link: 'https://www.nj.gov/labor/myunemployment/help/newapp.shtml' },
   { name: 'IBM Maximo AI - Visual Inspection', link: 'https://www.ibm.com/products/maximo/visual-inspection'},
   { name: 'Power Virtual Server', link: 'https://www.ibm.com/products/power-virtual-server' },
 ];
@@ -36,16 +36,16 @@ export const selectedProjects = [
 // Skills section for about section of the page
 
 export const skills = [
-  'UAT testing',
+  'User-centered design',
   'Accessibility (W3C certified)',
   'Responsive design',
-  'Qual/Quant methods',
   'Figma',
   'Sketch',
+  'User testing',
+  'Information architecture',
   'HTML',
   'CSS',
   'JavaScript',
-  'Git',
   'GitHub',
   'Agile',
 ];
@@ -63,13 +63,13 @@ export const workExperiences = [
     organisationName: 'Freelance',
     position: 'Designer and Developer - Nonprofit Sector',
     date: '2021 - 2022',
-    info: ['Clients included The New Orleans Photo Alliance, St. Louise House, and Greengate Farms.'],
+    info: ['Clients included The New Orleans Photo Alliance, St. Louise House, and Green Gate Farms.'],
   },
   {
     organisationName: 'IBM',
     position: 'Design Research Lead',
     date: '2018 - 2021',
-    info: ['Power Systems team supporting IBM`s AI platforms, hybrid cloud environments, and enterprise aceleration hardware.'],
+    info: ['Power Systems team supporting IBM`s AI platforms, hybrid cloud environments, and enterprise acceleration hardware.'],
   },
 ];
 

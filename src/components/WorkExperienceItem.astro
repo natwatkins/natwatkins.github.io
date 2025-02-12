@@ -12,11 +12,11 @@ const { workExperience } = Astro.props;
         >{workExperience.position}</span
       >
     </div>
-    <span class='font-light text-sm text-slate-600 group-hover:text-black'
+    <span class='font-light text-sm text-slate-600'
       >{workExperience.date}</span
     >
   </div>
-  <ul class='mt-1 p-2 ml-3 list-disc'>
+  <ul class='mt-1'>
     {workExperience.info.map((info) => <li>{info}</li>)}
   </ul>
 </div>
