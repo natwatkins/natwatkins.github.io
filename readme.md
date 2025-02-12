@@ -3,7 +3,7 @@
 
 I built this site with the Aether Astro theme. Modifications are my own. 
 
-Deployed on (GitHub Pages using GitHub actions)[https://docs.astro.build/en/guides/deploy/github/].
+Deployed on [GitHub Pages using GitHub actions](https://docs.astro.build/en/guides/deploy/github/).
 
 ---
 
