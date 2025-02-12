@@ -52,8 +52,6 @@ Note: Configure the `site` property in the `astro.config.mjs` file before deploy
 
 ## Perfect Lighthouse score
 
-![light house score](./screenshots/lh.png)
-
 Aether have a perfect lighthouse score in every aspect, giving your site a blazing fast and optimized experience.
 
 ## License
