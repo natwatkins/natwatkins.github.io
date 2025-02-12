@@ -8,6 +8,6 @@ import sitemap from '@astrojs/sitemap';
 
 // https://astro.build/config
 export default defineConfig({
-  site: 'https://aether-astro-theme.netlify.app/',
+  site: 'https://natwatkins.com',
   integrations: [tailwind(), react(), sitemap()],
 });
