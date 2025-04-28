@@ -1,0 +1,15 @@
+---
+import MainLayout from '../layouts/MainLayout.astro';
+import MainSection from '../components/sections/MainSection.astro';
+import AboutSection from '../components/sections/AboutSection.astro';
+import SelectedProjectsSection from '../components/sections/SelectedProjectsSection.astro';
+import ContactSection from '../components/sections/ContactSection.astro';
+import { myName, myBio, aboutMe, skills, navLinks, contactOptions, projects } from '../data';
+---
+
+<MainLayout>
+  <MainSection navLinks={navLinks} myName={myName} myBio={myBio} />
+    <SelectedProjectsSection projects={projects} />
+  <AboutSection aboutMe={aboutMe} skills={skills} />
+  <ContactSection contactOptions={contactOptions} />
+</MainLayout>

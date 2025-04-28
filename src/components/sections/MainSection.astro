@@ -1,0 +1,19 @@
+---
+import Navbar from '../Navbar';
+import Section from '../Section.astro';
+const { navLinks, myName, myBio } = Astro.props;
+---
+
+<Section styles='p-1'>
+  <Navbar navLinks={navLinks} client:load />
+  <div class='w-full min-h-[85vh] flex items-center justify-center'>
+    <div class='w-[100%] p-5'>
+      <h2 class='font-bold leading-[5rem] text-[4.5rem] md:text-[5.5rem] lg:text-[7rem]'>
+        I'm {myName}.
+      </h2>
+      <p class='mt-5 text-[1.2rem] text-slate-900'>
+        {myBio}
+      </p>
+    </div>
+  </div>
+</Section>
