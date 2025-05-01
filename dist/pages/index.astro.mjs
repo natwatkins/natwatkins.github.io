@@ -1,8 +1,8 @@
 /* empty css                                 */
-import { b as createAstro, c as createComponent, r as renderTemplate, m as maybeRenderHead, a as renderComponent, d as addAttribute } from '../chunks/astro/server_IVX52hWm.mjs';
+import { b as createAstro, c as createComponent, m as maybeRenderHead, a as renderTemplate, r as renderComponent, d as addAttribute } from '../chunks/astro/server_DAQwUKiY.mjs';
 import 'kleur/colors';
 import 'html-escaper';
-import { b as $$Section, p as projects, $ as $$MainLayout, a as $$MainSection, m as myBio, c as myName, n as navLinks, s as skills, d as aboutMe, e as contactOptions } from '../chunks/MainSection_DN8cK2in.mjs';
+import { b as $$Section, p as projects, $ as $$MainLayout, a as $$MainSection, m as myBio, c as myName, n as navLinks, s as skills, d as aboutMe, e as contactOptions } from '../chunks/MainSection_BYbN2ezq.mjs';
 import 'clsx';
 export { renderers } from '../renderers.mjs';
 

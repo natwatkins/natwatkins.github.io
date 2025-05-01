@@ -1,8 +1,8 @@
 /* empty css                                    */
-import { c as createComponent, r as renderTemplate, a as renderComponent, m as maybeRenderHead } from '../../chunks/astro/server_IVX52hWm.mjs';
+import { c as createComponent, r as renderComponent, a as renderTemplate, m as maybeRenderHead } from '../../chunks/astro/server_DAQwUKiY.mjs';
 import 'kleur/colors';
 import 'html-escaper';
-import { $ as $$MainLayout, a as $$MainSection } from '../../chunks/MainSection_DN8cK2in.mjs';
+import { $ as $$MainLayout, a as $$MainSection } from '../../chunks/MainSection_BYbN2ezq.mjs';
 export { renderers } from '../../renderers.mjs';
 
 const $$CmsClaimsDataApis = createComponent(($$result, $$props, $$slots) => {

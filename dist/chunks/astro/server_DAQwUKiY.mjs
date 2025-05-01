@@ -155,7 +155,7 @@ function createComponent(arg1, moduleId, propagation) {
   }
 }
 
-const ASTRO_VERSION = "5.2.5";
+const ASTRO_VERSION = "5.7.10";
 const NOOP_MIDDLEWARE_HEADER = "X-Astro-Noop";
 
 function createAstroGlobFn() {
@@ -655,28 +655,38 @@ class BufferedRenderer {
   chunks = [];
   renderPromise;
   destination;
-  constructor(bufferRenderFunction) {
-    this.renderPromise = bufferRenderFunction(this);
-    Promise.resolve(this.renderPromise).catch(noop);
+  /**
+   * Determines whether buffer has been flushed
+   * to the final destination.
+   */
+  flushed = false;
+  constructor(destination, renderFunction) {
+    this.destination = destination;
+    this.renderPromise = renderFunction(this);
+    if (isPromise(this.renderPromise)) {
+      Promise.resolve(this.renderPromise).catch(noop);
+    }
   }
   write(chunk) {
-    if (this.destination) {
+    if (this.flushed) {
       this.destination.write(chunk);
     } else {
       this.chunks.push(chunk);
     }
   }
-  async renderToFinalDestination(destination) {
-    for (const chunk of this.chunks) {
-      destination.write(chunk);
+  flush() {
+    if (this.flushed) {
+      throw new Error("The render buffer has already been flushed.");
     }
-    this.destination = destination;
-    await this.renderPromise;
+    this.flushed = true;
+    for (const chunk of this.chunks) {
+      this.destination.write(chunk);
+    }
+    return this.renderPromise;
   }
 }
-function renderToBufferDestination(bufferRenderFunction) {
-  const renderer = new BufferedRenderer(bufferRenderFunction);
-  return renderer;
+function createBufferedRenderer(destination, renderFunction) {
+  return new BufferedRenderer(destination, renderFunction);
 }
 typeof process !== "undefined" && Object.prototype.toString.call(process) === "[object process]";
 const VALID_PROTOCOLS = ["http:", "https:"];
@@ -701,6 +711,9 @@ function renderAllHeadContent(result) {
   );
   result.styles.clear();
   const scripts = Array.from(result.scripts).filter(uniqueElements).map((script) => {
+    if (result.userAssetsBase) {
+      script.props.src = (result.base === "/" ? "" : result.base) + result.userAssetsBase + script.props.src;
+    }
     return renderElement("script", script, false);
   });
   const links = Array.from(result.links).filter(uniqueElements).map((link) => renderElement("link", link, false));
@@ -717,6 +730,28 @@ function renderHead() {
 }
 function maybeRenderHead() {
   return createRenderInstruction({ type: "maybe-head" });
+}
+
+const ALGORITHM = "AES-GCM";
+async function decodeKey(encoded) {
+  const bytes = decodeBase64(encoded);
+  return crypto.subtle.importKey("raw", bytes, ALGORITHM, true, ["encrypt", "decrypt"]);
+}
+const encoder = new TextEncoder();
+new TextDecoder();
+const IV_LENGTH = 24;
+async function encryptString(key, raw) {
+  const iv = crypto.getRandomValues(new Uint8Array(IV_LENGTH / 2));
+  const data = encoder.encode(raw);
+  const buffer = await crypto.subtle.encrypt(
+    {
+      name: ALGORITHM,
+      iv
+    },
+    key,
+    data
+  );
+  return encodeHexUpperCase(iv) + encodeBase64(new Uint8Array(buffer));
 }
 
 const renderTemplateResultSym = Symbol.for("astro.renderTemplateResult");
@@ -740,22 +775,32 @@ class RenderTemplateResult {
       return expression;
     });
   }
-  async render(destination) {
-    const expRenders = this.expressions.map((exp) => {
-      return renderToBufferDestination((bufferDestination) => {
+  render(destination) {
+    const flushers = this.expressions.map((exp) => {
+      return createBufferedRenderer(destination, (bufferDestination) => {
         if (exp || exp === 0) {
           return renderChild(bufferDestination, exp);
         }
       });
     });
-    for (let i = 0; i < this.htmlParts.length; i++) {
-      const html = this.htmlParts[i];
-      const expRender = expRenders[i];
-      destination.write(markHTMLString(html));
-      if (expRender) {
-        await expRender.renderToFinalDestination(destination);
+    let i = 0;
+    const iterate = () => {
+      while (i < this.htmlParts.length) {
+        const html = this.htmlParts[i];
+        const flusher = flushers[i];
+        i++;
+        if (html) {
+          destination.write(markHTMLString(html));
+        }
+        if (flusher) {
+          const result = flusher.flush();
+          if (isPromise(result)) {
+            return result.then(iterate);
+          }
+        }
       }
-    }
+    };
+    return iterate();
   }
 }
 function isRenderTemplateResult(obj) {
@@ -835,6 +880,116 @@ async function renderSlots(result, slots = {}) {
   return { slotInstructions, children };
 }
 
+const internalProps = /* @__PURE__ */ new Set([
+  "server:component-path",
+  "server:component-export",
+  "server:component-directive",
+  "server:defer"
+]);
+function containsServerDirective(props) {
+  return "server:component-directive" in props;
+}
+const SCRIPT_RE = /<\/script/giu;
+const COMMENT_RE = /<!--/gu;
+const SCRIPT_REPLACER = "<\\/script";
+const COMMENT_REPLACER = "\\u003C!--";
+function safeJsonStringify(obj) {
+  return JSON.stringify(obj).replace(SCRIPT_RE, SCRIPT_REPLACER).replace(COMMENT_RE, COMMENT_REPLACER);
+}
+function createSearchParams(componentExport, encryptedProps, slots) {
+  const params = new URLSearchParams();
+  params.set("e", componentExport);
+  params.set("p", encryptedProps);
+  params.set("s", slots);
+  return params;
+}
+function isWithinURLLimit(pathname, params) {
+  const url = pathname + "?" + params.toString();
+  const chars = url.length;
+  return chars < 2048;
+}
+function renderServerIsland(result, _displayName, props, slots) {
+  return {
+    async render(destination) {
+      const componentPath = props["server:component-path"];
+      const componentExport = props["server:component-export"];
+      const componentId = result.serverIslandNameMap.get(componentPath);
+      if (!componentId) {
+        throw new Error(`Could not find server component name`);
+      }
+      for (const key2 of Object.keys(props)) {
+        if (internalProps.has(key2)) {
+          delete props[key2];
+        }
+      }
+      destination.write(createRenderInstruction({ type: "server-island-runtime" }));
+      destination.write("<!--[if astro]>server-island-start<![endif]-->");
+      const renderedSlots = {};
+      for (const name in slots) {
+        if (name !== "fallback") {
+          const content = await renderSlotToString(result, slots[name]);
+          renderedSlots[name] = content.toString();
+        } else {
+          await renderChild(destination, slots.fallback(result));
+        }
+      }
+      const key = await result.key;
+      const propsEncrypted = Object.keys(props).length === 0 ? "" : await encryptString(key, JSON.stringify(props));
+      const hostId = crypto.randomUUID();
+      const slash = result.base.endsWith("/") ? "" : "/";
+      let serverIslandUrl = `${result.base}${slash}_server-islands/${componentId}${result.trailingSlash === "always" ? "/" : ""}`;
+      const potentialSearchParams = createSearchParams(
+        componentExport,
+        propsEncrypted,
+        safeJsonStringify(renderedSlots)
+      );
+      const useGETRequest = isWithinURLLimit(serverIslandUrl, potentialSearchParams);
+      if (useGETRequest) {
+        serverIslandUrl += "?" + potentialSearchParams.toString();
+        destination.write(
+          `<link rel="preload" as="fetch" href="${serverIslandUrl}" crossorigin="anonymous">`
+        );
+      }
+      destination.write(`<script type="module" data-astro-rerun data-island-id="${hostId}">${useGETRequest ? (
+        // GET request
+        `let response = await fetch('${serverIslandUrl}');`
+      ) : (
+        // POST request
+        `let data = {
+	componentExport: ${safeJsonStringify(componentExport)},
+	encryptedProps: ${safeJsonStringify(propsEncrypted)},
+	slots: ${safeJsonStringify(renderedSlots)},
+};
+let response = await fetch('${serverIslandUrl}', {
+	method: 'POST',
+	body: JSON.stringify(data),
+});`
+      )}
+replaceServerIsland('${hostId}', response);</script>`);
+    }
+  };
+}
+const renderServerIslandRuntime = () => markHTMLString(
+  `
+	<script>
+		async function replaceServerIsland(id, r) {
+			let s = document.querySelector(\`script[data-island-id="\${id}"]\`);
+			// If there's no matching script, or the request fails then return
+			if (!s || r.status !== 200 || r.headers.get('content-type')?.split(';')[0].trim() !== 'text/html') return;
+			// Load the HTML before modifying the DOM in case of errors
+			let html = await r.text();
+			// Remove any placeholder content before the island script
+			while (s.previousSibling && s.previousSibling.nodeType !== 8 && s.previousSibling.data !== '[if astro]>server-island-start<![endif]')
+				s.previousSibling.remove();
+			s.previousSibling?.remove();
+			// Insert the new HTML
+			s.before(document.createRange().createContextualFragment(html));
+			// Remove the script. Prior to v5.4.2, this was the trick to force rerun of scripts.  Keeping it to minimize change to the existing behavior.
+			s.remove();
+		}
+	</script>`.split("\n").map((line) => line.trim()).filter((line) => line && !line.startsWith("//")).join(" ")
+);
+
 const Fragment = Symbol.for("astro:fragment");
 const Renderer = Symbol.for("astro:renderer");
 new TextEncoder();
@@ -876,6 +1031,13 @@ function stringifyChunk(result, chunk) {
         }
         return "";
       }
+      case "server-island-runtime": {
+        if (result._metadata.hasRenderedServerIslandRuntime) {
+          return "";
+        }
+        result._metadata.hasRenderedServerIslandRuntime = true;
+        return renderServerIslandRuntime();
+      }
       default: {
         throw new Error(`Unknown chunk type: ${chunk.type}`);
       }
@@ -906,42 +1068,92 @@ function isRenderInstance(obj) {
   return !!obj && typeof obj === "object" && "render" in obj && typeof obj.render === "function";
 }
 
-async function renderChild(destination, child) {
+function renderChild(destination, child) {
   if (isPromise(child)) {
-    child = await child;
+    return child.then((x) => renderChild(destination, x));
   }
   if (child instanceof SlotString) {
     destination.write(child);
-  } else if (isHTMLString(child)) {
+    return;
+  }
+  if (isHTMLString(child)) {
     destination.write(child);
-  } else if (Array.isArray(child)) {
-    const childRenders = child.map((c) => {
-      return renderToBufferDestination((bufferDestination) => {
-        return renderChild(bufferDestination, c);
-      });
-    });
-    for (const childRender of childRenders) {
-      if (!childRender) continue;
-      await childRender.renderToFinalDestination(destination);
-    }
-  } else if (typeof child === "function") {
-    await renderChild(destination, child());
-  } else if (typeof child === "string") {
+    return;
+  }
+  if (Array.isArray(child)) {
+    return renderArray(destination, child);
+  }
+  if (typeof child === "function") {
+    return renderChild(destination, child());
+  }
+  if (!child && child !== 0) {
+    return;
+  }
+  if (typeof child === "string") {
     destination.write(markHTMLString(escapeHTML(child)));
-  } else if (!child && child !== 0) ; else if (isRenderInstance(child)) {
-    await child.render(destination);
-  } else if (isRenderTemplateResult(child)) {
-    await child.render(destination);
-  } else if (isAstroComponentInstance(child)) {
-    await child.render(destination);
-  } else if (ArrayBuffer.isView(child)) {
+    return;
+  }
+  if (isRenderInstance(child)) {
+    return child.render(destination);
+  }
+  if (isRenderTemplateResult(child)) {
+    return child.render(destination);
+  }
+  if (isAstroComponentInstance(child)) {
+    return child.render(destination);
+  }
+  if (ArrayBuffer.isView(child)) {
     destination.write(child);
-  } else if (typeof child === "object" && (Symbol.asyncIterator in child || Symbol.iterator in child)) {
-    for await (const value of child) {
-      await renderChild(destination, value);
+    return;
+  }
+  if (typeof child === "object" && (Symbol.asyncIterator in child || Symbol.iterator in child)) {
+    if (Symbol.asyncIterator in child) {
+      return renderAsyncIterable(destination, child);
     }
-  } else {
-    destination.write(child);
+    return renderIterable(destination, child);
+  }
+  destination.write(child);
+}
+function renderArray(destination, children) {
+  const flushers = children.map((c) => {
+    return createBufferedRenderer(destination, (bufferDestination) => {
+      return renderChild(bufferDestination, c);
+    });
+  });
+  const iterator = flushers[Symbol.iterator]();
+  const iterate = () => {
+    for (; ; ) {
+      const { value: flusher, done } = iterator.next();
+      if (done) {
+        break;
+      }
+      const result = flusher.flush();
+      if (isPromise(result)) {
+        return result.then(iterate);
+      }
+    }
+  };
+  return iterate();
+}
+function renderIterable(destination, children) {
+  const iterator = children[Symbol.iterator]();
+  const iterate = () => {
+    for (; ; ) {
+      const { value, done } = iterator.next();
+      if (done) {
+        break;
+      }
+      const result = renderChild(destination, value);
+      if (isPromise(result)) {
+        return result.then(iterate);
+      }
+    }
+  };
+  return iterate();
+}
+async function renderAsyncIterable(destination, children) {
+  for await (const value of children) {
+    await renderChild(destination, value);
   }
 }
 
@@ -970,8 +1182,10 @@ class AstroComponentInstance {
       };
     }
   }
-  async init(result) {
-    if (this.returnValue !== void 0) return this.returnValue;
+  init(result) {
+    if (this.returnValue !== void 0) {
+      return this.returnValue;
+    }
     this.returnValue = this.factory(result, this.props, this.slotValues);
     if (isPromise(this.returnValue)) {
       this.returnValue.then((resolved) => {
@@ -981,12 +1195,18 @@ class AstroComponentInstance {
     }
     return this.returnValue;
   }
-  async render(destination) {
-    const returnValue = await this.init(this.result);
+  render(destination) {
+    const returnValue = this.init(this.result);
+    if (isPromise(returnValue)) {
+      return returnValue.then((x) => this.renderImpl(destination, x));
+    }
+    return this.renderImpl(destination, returnValue);
+  }
+  renderImpl(destination, returnValue) {
     if (isHeadAndContent(returnValue)) {
-      await returnValue.content.render(destination);
+      return returnValue.content.render(destination);
     } else {
-      await renderChild(destination, returnValue);
+      return renderChild(destination, returnValue);
     }
   }
 }
@@ -1031,143 +1251,6 @@ function getHTMLElementName(constructor) {
   if (definedName) return definedName;
   const assignedName = constructor.name.replace(/^HTML|Element$/g, "").replace(/[A-Z]/g, "-$&").toLowerCase().replace(/^-/, "html-");
   return assignedName;
-}
-
-const ALGORITHM = "AES-GCM";
-async function decodeKey(encoded) {
-  const bytes = decodeBase64(encoded);
-  return crypto.subtle.importKey("raw", bytes, ALGORITHM, true, ["encrypt", "decrypt"]);
-}
-const encoder = new TextEncoder();
-new TextDecoder();
-const IV_LENGTH = 24;
-async function encryptString(key, raw) {
-  const iv = crypto.getRandomValues(new Uint8Array(IV_LENGTH / 2));
-  const data = encoder.encode(raw);
-  const buffer = await crypto.subtle.encrypt(
-    {
-      name: ALGORITHM,
-      iv
-    },
-    key,
-    data
-  );
-  return encodeHexUpperCase(iv) + encodeBase64(new Uint8Array(buffer));
-}
-
-const internalProps = /* @__PURE__ */ new Set([
-  "server:component-path",
-  "server:component-export",
-  "server:component-directive",
-  "server:defer"
-]);
-function containsServerDirective(props) {
-  return "server:component-directive" in props;
-}
-const SCRIPT_RE = /<\/script/giu;
-const COMMENT_RE = /<!--/gu;
-const SCRIPT_REPLACER = "<\\/script";
-const COMMENT_REPLACER = "\\u003C!--";
-function safeJsonStringify(obj) {
-  return JSON.stringify(obj).replace(SCRIPT_RE, SCRIPT_REPLACER).replace(COMMENT_RE, COMMENT_REPLACER);
-}
-function createSearchParams(componentExport, encryptedProps, slots) {
-  const params = new URLSearchParams();
-  params.set("e", componentExport);
-  params.set("p", encryptedProps);
-  params.set("s", slots);
-  return params;
-}
-function isWithinURLLimit(pathname, params) {
-  const url = pathname + "?" + params.toString();
-  const chars = url.length;
-  return chars < 2048;
-}
-function renderServerIsland(result, _displayName, props, slots) {
-  return {
-    async render(destination) {
-      const componentPath = props["server:component-path"];
-      const componentExport = props["server:component-export"];
-      const componentId = result.serverIslandNameMap.get(componentPath);
-      if (!componentId) {
-        throw new Error(`Could not find server component name`);
-      }
-      for (const key2 of Object.keys(props)) {
-        if (internalProps.has(key2)) {
-          delete props[key2];
-        }
-      }
-      destination.write("<!--[if astro]>server-island-start<![endif]-->");
-      const renderedSlots = {};
-      for (const name in slots) {
-        if (name !== "fallback") {
-          const content = await renderSlotToString(result, slots[name]);
-          renderedSlots[name] = content.toString();
-        } else {
-          await renderChild(destination, slots.fallback(result));
-        }
-      }
-      const key = await result.key;
-      const propsEncrypted = Object.keys(props).length === 0 ? "" : await encryptString(key, JSON.stringify(props));
-      const hostId = crypto.randomUUID();
-      const slash = result.base.endsWith("/") ? "" : "/";
-      let serverIslandUrl = `${result.base}${slash}_server-islands/${componentId}${result.trailingSlash === "always" ? "/" : ""}`;
-      const potentialSearchParams = createSearchParams(
-        componentExport,
-        propsEncrypted,
-        safeJsonStringify(renderedSlots)
-      );
-      const useGETRequest = isWithinURLLimit(serverIslandUrl, potentialSearchParams);
-      if (useGETRequest) {
-        serverIslandUrl += "?" + potentialSearchParams.toString();
-        destination.write(
-          `<link rel="preload" as="fetch" href="${serverIslandUrl}" crossorigin="anonymous">`
-        );
-      }
-      destination.write(`<script async type="module" data-island-id="${hostId}">
-let script = document.querySelector('script[data-island-id="${hostId}"]');
-
-${useGETRequest ? (
-        // GET request
-        `let response = await fetch('${serverIslandUrl}');
-`
-      ) : (
-        // POST request
-        `let data = {
-	componentExport: ${safeJsonStringify(componentExport)},
-	encryptedProps: ${safeJsonStringify(propsEncrypted)},
-	slots: ${safeJsonStringify(renderedSlots)},
-};
-
-let response = await fetch('${serverIslandUrl}', {
-	method: 'POST',
-	body: JSON.stringify(data),
-});
-`
-      )}
-if (script) {
-	if(
-		response.status === 200 
-		&& response.headers.has('content-type') 
-		&& response.headers.get('content-type').split(";")[0].trim() === 'text/html') {
-		let html = await response.text();
-	
-		// Swap!
-		while(script.previousSibling &&
-			script.previousSibling.nodeType !== 8 &&
-			script.previousSibling.data !== '[if astro]>server-island-start<![endif]') {
-			script.previousSibling.remove();
-		}
-		script.previousSibling?.remove();
-	
-		let frag = document.createRange().createContextualFragment(html);
-		script.before(frag);
-	}
-	script.remove();
-}
-</script>`);
-    }
-  };
 }
 
 const rendererAliases = /* @__PURE__ */ new Map([["solid", "solid-js"]]);
@@ -1496,26 +1579,28 @@ function renderAstroComponent(result, displayName, Component, props, slots = {})
   }
   const instance = createAstroComponentInstance(result, displayName, Component, props, slots);
   return {
-    async render(destination) {
-      await instance.render(destination);
+    render(destination) {
+      return instance.render(destination);
     }
   };
 }
-async function renderComponent(result, displayName, Component, props, slots = {}) {
+function renderComponent(result, displayName, Component, props, slots = {}) {
   if (isPromise(Component)) {
-    Component = await Component.catch(handleCancellation);
+    return Component.catch(handleCancellation).then((x) => {
+      return renderComponent(result, displayName, x, props, slots);
+    });
   }
   if (isFragmentComponent(Component)) {
-    return await renderFragmentComponent(result, slots).catch(handleCancellation);
+    return renderFragmentComponent(result, slots).catch(handleCancellation);
   }
   props = normalizeProps(props);
   if (isHTMLComponent(Component)) {
-    return await renderHTMLComponent(result, Component, props, slots).catch(handleCancellation);
+    return renderHTMLComponent(result, Component, props, slots).catch(handleCancellation);
   }
   if (isAstroComponentFactory(Component)) {
     return renderAstroComponent(result, displayName, Component, props, slots);
   }
-  return await renderFrameworkComponent(result, displayName, Component, props, slots).catch(
+  return renderFrameworkComponent(result, displayName, Component, props, slots).catch(
     handleCancellation
   );
   function handleCancellation(e) {
@@ -1551,10 +1636,12 @@ async function renderScript(result, id) {
     }
   }
   const resolved = await result.resolve(id);
-  return markHTMLString(`<script type="module" src="${resolved}"></script>`);
+  return markHTMLString(
+    `<script type="module" src="${result.userAssetsBase ? (result.base === "/" ? "" : result.base) + result.userAssetsBase : ""}${resolved}"></script>`
+  );
 }
 
 "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ-_".split("").reduce((v, c) => (v[c.charCodeAt(0)] = c, v), []);
 "-0123456789_".split("").reduce((v, c) => (v[c.charCodeAt(0)] = c, v), []);
 
-export { NOOP_MIDDLEWARE_HEADER as N, renderComponent as a, createAstro as b, createComponent as c, addAttribute as d, renderScript as e, renderHead as f, renderSlot as g, decodeKey as h, maybeRenderHead as m, renderTemplate as r };
+export { NOOP_MIDDLEWARE_HEADER as N, renderTemplate as a, createAstro as b, createComponent as c, addAttribute as d, renderScript as e, renderHead as f, renderSlot as g, decodeKey as h, maybeRenderHead as m, renderComponent as r };

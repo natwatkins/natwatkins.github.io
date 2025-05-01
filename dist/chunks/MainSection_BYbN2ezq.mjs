@@ -1,9 +1,10 @@
-import { b as createAstro, c as createComponent, r as renderTemplate, d as addAttribute, e as renderScript, f as renderHead, g as renderSlot, a as renderComponent, m as maybeRenderHead } from './astro/server_IVX52hWm.mjs';
+import { b as createAstro, c as createComponent, d as addAttribute, e as renderScript, a as renderTemplate, f as renderHead, g as renderSlot, r as renderComponent, m as maybeRenderHead } from './astro/server_DAQwUKiY.mjs';
 import 'kleur/colors';
 import 'html-escaper';
 /* empty css                         */
 import 'clsx';
-import { jsx, jsxs } from 'react/jsx-runtime';
+import { jsxs, jsx } from 'react/jsx-runtime';
+import { motion } from 'framer-motion';
 import { useState } from 'react';
 
 // for enabling view transitions
@@ -110,11 +111,84 @@ const $$MainLayout = createComponent(($$result, $$props, $$slots) => {
 
 function Navbar({ navLinks }) {
   const [isToggled, setIsToggled] = useState(false);
+  const subMenuLinkStyles = `text-xl text-slate-700 hover:text-slate-950 transition-all duration-[0.3s]`;
   const MenuLinkStyles = `text-md font-semibold text-slate-900 hover:text-orange-700 transition-all duration-[0.3s]`;
-  return /* @__PURE__ */ jsx("nav", { className: "fixed top-0 left-0 w-full z-50 bg-white shadow-sm", children: /* @__PURE__ */ jsxs("div", { className: "flex justify-between items-center p-5", children: [
-    /* @__PURE__ */ jsx("a", { href: "/", className: "logo text-md font-bold", children: navLogoText  }),
-    /* @__PURE__ */ jsx("div", { className: "links", children: /* @__PURE__ */ jsx("ul", { className: "flex items-center gap-7", children: navLinks.map((link) => /* @__PURE__ */ jsx("li", { className: MenuLinkStyles, children: /* @__PURE__ */ jsx("a", { href: `${link.href}`, children: link.name }) }, link.name)) }) })
-  ] }) });
+  const container = {
+    hidden: { opacity: 0 },
+    show: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.1,
+        duration: 1
+      }
+    }
+  };
+  const item = {
+    hidden: { opacity: 0, x: 100 },
+    show: { opacity: 1, x: 0 }
+  };
+  return /* @__PURE__ */ jsxs("nav", { className: "fixed top-0 left-0 w-full z-50 bg-white shadow-sm", children: [
+    /* @__PURE__ */ jsxs("div", { className: "flex justify-between items-center p-5", children: [
+      /* @__PURE__ */ jsx("a", { href: "/", className: "logo text-md font-bold", children: navLogoText  }),
+      /* @__PURE__ */ jsx("div", { className: "links", children: /* @__PURE__ */ jsx("ul", { className: "hidden md:flex items-center gap-7", children: navLinks.map((link) => /* @__PURE__ */ jsx("li", { className: MenuLinkStyles, children: /* @__PURE__ */ jsx("a", { href: `${link.href}`, children: link.name }) }, link.name)) }) }),
+      /* @__PURE__ */ jsxs(
+        motion.div,
+        {
+          className: `flex flex-col md:hidden gap-[3.5px] cursor-pointer z-50 ${isToggled ? "fixed top-6 right-5" : ""}`,
+          onClick: () => setIsToggled((prev) => !prev),
+          children: [
+            /* @__PURE__ */ jsx(
+              motion.span,
+              {
+                animate: {
+                  rotate: isToggled ? 45 : 0,
+                  translateY: isToggled ? 7 : 0,
+                  width: isToggled ? 30 : 30
+                },
+                className: "w-[30px] h-[2px] bg-black"
+              }
+            ),
+            /* @__PURE__ */ jsx(
+              motion.span,
+              {
+                animate: { opacity: isToggled ? 0 : 1, width: isToggled ? 0 : 25 },
+                className: "w-[20px] h-[2px] bg-black"
+              }
+            ),
+            /* @__PURE__ */ jsx(
+              motion.span,
+              {
+                animate: {
+                  rotate: isToggled ? -45 : 0,
+                  translateY: isToggled ? -5 : 0,
+                  width: isToggled ? 30 : 15
+                },
+                className: "w-[15px] h-[2px] bg-black"
+              }
+            )
+          ]
+        }
+      )
+    ] }),
+    isToggled && /* @__PURE__ */ jsx(motion.div, { className: "md:hidden fixed top-0 left-0 w-screen h-screen flex flex-col justify-center items-center z-30 bg-white", children: /* @__PURE__ */ jsx(
+      motion.ul,
+      {
+        className: "flex md:hidden flex-col items-center gap-3",
+        variants: container,
+        initial: "hidden",
+        animate: "show",
+        children: navLinks.map((link) => /* @__PURE__ */ jsx(motion.li, { variants: item, children: /* @__PURE__ */ jsx(
+          "a",
+          {
+            href: link.href,
+            className: subMenuLinkStyles,
+            onClick: () => setIsToggled(false),
+            children: link.name
+          }
+        ) }, link.name))
+      }
+    ) })
+  ] });
 }
 
 const $$Astro$1 = createAstro("https://natwatkins.com");
