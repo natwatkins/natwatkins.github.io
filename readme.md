@@ -12,9 +12,9 @@ Deployed on [GitHub Pages using GitHub actions](https://docs.astro.build/en/guid
 ```
 npm install
 ```
+
 2. Make changes to the Homepage using props on `src/data.js`
 
-```
 3. Use the following commands
 
 ```
