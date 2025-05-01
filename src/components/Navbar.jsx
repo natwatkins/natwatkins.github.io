@@ -22,7 +22,7 @@ export default function Navbar({ navLinks }) {
     show: { opacity: 1, x: 0 },
   };
   return (
-    <nav className='relative top-0 left-0 w-full'>
+    <nav className='fixed top-0 left-0 w-full z-50 bg-white shadow-sm'>
       <div className='flex justify-between items-center p-5'>
         <a href='/' className='logo text-md font-bold'>
           {navLogoText ? navLogoText : 'Aether.'}

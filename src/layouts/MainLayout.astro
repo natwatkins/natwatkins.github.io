@@ -1,18 +1,10 @@
 ---
 const {
   title = 'Nat Watkins - Portfolio',
-  description = 'UX researcher, designer, and front end developer.',
+  description = 'UX Researcher, Designer, and Front End Developer.',
 } = Astro.props;
-import '@fontsource/poppins/100.css';
-import '@fontsource/poppins/200.css';
-import '@fontsource/poppins/300.css';
-import '@fontsource/poppins/400.css';
-import '@fontsource/poppins/500.css';
-import '@fontsource/poppins/600.css';
-import '@fontsource/poppins/700.css';
-import '@fontsource/poppins/800.css';
-import '@fontsource/poppins/900.css';
-import { isTransitionEnabled } from '../data';
+import Navbar from '../components/Navbar';
+import { isTransitionEnabled, navLinks } from '../data';
 import '../styles/styles.css';
 import { ViewTransitions } from 'astro:transitions';
 ---
@@ -29,6 +21,7 @@ import { ViewTransitions } from 'astro:transitions';
     {isTransitionEnabled && <ViewTransitions />}
   </head>
   <body>
+    <Navbar navLinks={navLinks} client:load />
     <slot />
   </body>
 </html>

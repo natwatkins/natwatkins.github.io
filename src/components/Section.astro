@@ -3,5 +3,7 @@ const { styles, ids } = Astro.props;
 ---
 
 <section class=`bg-fixed w-full  ${styles}` id={ids}>
-  <slot />
+  <div class='w-full px-4 md:px-8'>
+    <slot />
+  </div>
 </section>

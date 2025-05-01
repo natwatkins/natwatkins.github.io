@@ -5,11 +5,12 @@
 }
 
 html {
+  scroll-padding-top: 6rem;
   scroll-behavior: smooth;
 }
 
 body {
-  font-family: 'Poppins', sans-serif;
+  font-family: 'IBM Plex Sans', sans-serif;
 }
 
 &::-webkit-scrollbar {
