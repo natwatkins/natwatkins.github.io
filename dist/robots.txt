@@ -2,4 +2,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://aether-astro-theme.netlify.app/sitemap-index.xml
+Sitemap: https://natwatkins.com/sitemap-index.xml

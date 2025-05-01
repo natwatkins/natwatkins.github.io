@@ -1,85 +1,83 @@
-export const isTransitionEnabled = true; // for enabling view transitions
+// for enabling view transitions
+export const isTransitionEnabled = true; 
 
-export const myName = 'Nat Watkins'; // For name in main intro text
+// Site title
+export const myName = 'Nat Watkins'; 
 
-export const navLogoText = 'Nat Watkins'; // navbar left-most logo text
-// bio for main section
+// Nav logo text
+export const navLogoText = 'Nat Watkins'; 
 
-export const myBio = `UX researcher, designer, and front end developer. Ideally, in that order.`;
-
-// about me text for about section
-
-export const aboutMe =
-  'I have over 8 years of experience in digital services. My core skills are in user experince (UX) research and design for technical product delivery, with an emphasis on the developer experience and rapid front end development.';
-
-// A sub text for contact section
-export const contactText = ``;
-
-// Links to put in the navigation bar as well as footer at bottom of the page
-
+// Nav bar items
 export const navLinks = [
-  { name: 'Home', href: '/' },
+  { name: 'Projects', href: '/#projects' },
   { name: 'About', href: '/#about' },
   { name: 'Contact', href: '/#contact' },
-  { name: 'Resume', href: '/nat-watkins-resume.pdf' },
+  { name: 'Resume', href: '/nat-watkins-resume.pdf' }
 ];
 
-// Selected projects (side box) for main section of page
+// Bio
+export const myBio = 'UX Researcher, Designer, and Front End Developer. Ideally, in that order.';
 
-export const selectedProjects = [
-  { name: 'AB2D Claims Data API', link: 'https://ab2d.cms.gov' },
-  { name: 'New Jersey Unemployment Insurance Modernization', link: 'https://www.nj.gov/labor/myunemployment/help/newapp.shtml' },
-  { name: 'IBM Maximo AI - Visual Inspection', link: 'https://www.ibm.com/products/maximo/visual-inspection'},
-  { name: 'Power Virtual Server', link: 'https://www.ibm.com/products/power-virtual-server' },
+// Project data for the project cards
+export const projects = [
+  {
+    title: 'I researched, designed, and developed these websites.',
+    name: 'AB2D Claims Data API',
+    link: 'https://ab2d.cms.gov/',
+  },
+  {
+    title: 'I researched and designed this application portal.',
+    name: 'New Jersey Unemployment',
+    link: 'https://www.nj.gov/labor/myunemployment/help/newapp.shtml',
+    imageUrl: '/nj-dol.png'
+  },
+  {
+    title: 'I researched and designed this AI image recognition tool.',
+    name: 'Maximo AI',
+    link: 'https://www.ibm.com/products/maximo/asset-inspection',
+    imageUrl: '/maximo.gif'
+  },
+  {
+    title: 'I researched and designed this user interface.',
+    name: 'IBM Power Virtual Server',
+    link: 'https://www.ibm.com/products/power-virtual-server',
+    imageUrl: '/powervs.png'
+  },
+  {
+    title: 'I invented these.',
+    name: 'Patents',
+    link: 'https://patents.google.com/?inventor=Natalie+Watkins',
+    imageUrl: '/patent-graphic.png'
+  },
+  {
+    title: 'I wrote this.',
+    name: 'Article in WIRED',
+    link: 'https://www.wired.com/story/big-tech-patent-intellectual-property/',
+    imageUrl: '/article-wired.png'
+  }
 ];
 
-// Skills section for about section of the page
+// About Me text
+export const aboutMe = 'I have over 8 years of experience in digital and government services. My core skills are in User Experience (UX) research and design for technical product delivery, with strong capabilities in iterative, rapid front end development.';
 
+// Skills tags
 export const skills = [
-  'User-centered design',
-  'Accessibility (W3C certified)',
-  'Responsive design',
-  'Figma',
-  'Sketch',
-  'User testing',
-  'Information architecture',
-  'HTML',
-  'CSS',
-  'JavaScript',
-  'GitHub',
+  'User Research and Testing',
+  'Accessibility',
+  'Interaction Design',
+  'Human-Centered Design',
+  'Front End Development',
+  'Content Strategy',
+  'Figma / Sketch',
+  'HTML / CSS / JavaScript',
+  'Front End Frameworks',
+  'AI Tooling',
   'Agile',
 ];
 
-// work experience box for about section of the page
-
-export const workExperiences = [
-  {
-    organisationName: 'Nava PBC',
-    position: 'Designer Researcher',
-    date: '2022 - 2025',
-    info: ['Making government services simple, effective, and accessible to all.'],
-  },
-  {
-    organisationName: 'Freelance',
-    position: 'Designer and Developer - Nonprofit Sector',
-    date: '2021 - 2022',
-    info: ['Clients included The New Orleans Photo Alliance, St. Louise House, and Green Gate Farms.'],
-  },
-  {
-    organisationName: 'IBM',
-    position: 'Design Research Lead',
-    date: '2018 - 2021',
-    info: ['Power Systems team supporting IBM`s AI platforms, hybrid cloud environments, and enterprise acceleration hardware.'],
-  },
-];
-
-// contact box for contact section of the page
-
+// Contact options
 export const contactOptions = [
   { name: 'LinkedIn', link: 'https://www.linkedin.com/in/natwatkins/' },
   { name: 'GitHub', link: 'https://github.com/nat-watkins' },
-  { name: 'Email', link: 'mailto:watkinsnbw@gmail.com' },
+  { name: 'Email', link: 'mailto:watkinsnbw@gmail.com' }
 ];
-
-// for enabling/disabling maintained by text in footer, if you want.
-export const showDeveloperText = true;
