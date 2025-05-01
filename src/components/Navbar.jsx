@@ -1,73 +1,46 @@
-import { motion, useScroll, useSpring } from 'framer-motion';
-import { useState, useEffect } from 'react';
-import { navLogoText, navLinks } from '../data';
-import MobileMenu from './MobileMenu';
+import { motion } from 'framer-motion';
+import { useState } from 'react';
+import { navLogoText } from '../data';
 
 export default function Navbar({ navLinks }) {
   const [isToggled, setIsToggled] = useState(false);
-  const [isScrolled, setIsScrolled] = useState(false);
-  const MenuLinkStyles = `text-md font-semibold text-slate-950 hover:text-orange-700 transition-all duration-[0.3s]`;
+  const subMenuLinkStyles = `text-xl text-slate-700 hover:text-slate-950 transition-all duration-[0.3s]`;
+  const MenuLinkStyles = `text-md font-semibold text-slate-900 hover:text-orange-700 transition-all duration-[0.3s]`;
+  const container = {
+    hidden: { opacity: 0 },
+    show: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.1,
+        duration: 1,
+      },
+    },
+  };
 
-  useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 0);
-    };
-
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
-
+  const item = {
+    hidden: { opacity: 0, x: 100 },
+    show: { opacity: 1, x: 0 },
+  };
   return (
-    <motion.nav 
-      className='fixed top-0 left-0 w-full bg-white z-50 shadow-sm'
-      animate={{
-        padding: isScrolled ? '0.25rem 0' : '1rem 0',
-      }}
-      transition={{ duration: 0.15 }}
-      role="navigation"
-      aria-label="Main navigation"
-    >
-      <div className='flex justify-between items-center px-5 py-3 max-w-7xl mx-auto'>
-        <a 
-          href='/' 
-          className='logo text-md font-bold'
-          onClick={(e) => {
-            if (window.location.pathname === '/') {
-              e.preventDefault();
-              window.scrollTo({
-                top: 0,
-                behavior: 'smooth'
-              });
-            }
-          }}
-          aria-label="Home"
-        >
-          {navLogoText ? navLogoText : 'Aether.'}
+    <nav className='fixed top-0 left-0 w-full z-50 bg-white shadow-sm'>
+      <div className='flex justify-between items-center p-5'>
+        <a href='/' className='logo text-md font-bold'>
+          {navLogoText ? navLogoText : 'Nat Watkins'}
         </a>
         <div className='links'>
           <ul className='hidden md:flex items-center gap-7'>
             {navLinks.map((link) => (
-              <li 
-                key={link.name} 
-                className={MenuLinkStyles}
-              >
-                <a 
-                  href={link.href}
-                  {...(link.name === 'Resume' ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
-                >
-                  {link.name}
-                </a>
+              <li key={link.name} className={MenuLinkStyles}>
+                <a href={`${link.href}`}>{link.name}</a>
               </li>
             ))}
           </ul>
         </div>
-        <motion.button
+        <motion.div
           className={`flex flex-col md:hidden gap-[3.5px] cursor-pointer z-50 ${
             isToggled ? 'fixed top-6 right-5' : ''
           }`}
           onClick={() => setIsToggled((prev) => !prev)}
-          aria-label={isToggled ? "Close menu" : "Open menu"}
-          aria-expanded={isToggled}
         >
           <motion.span
             animate={{
@@ -89,15 +62,30 @@ export default function Navbar({ navLinks }) {
             }}
             className='w-[15px] h-[2px] bg-black'
           />
-        </motion.button>
+        </motion.div>
       </div>
       {isToggled && (
-        <MobileMenu 
-          navLinks={navLinks}
-          isToggled={isToggled}
-          setIsToggled={setIsToggled}
-        />
+        <motion.div className='md:hidden fixed top-0 left-0 w-screen h-screen flex flex-col justify-center items-center z-30 bg-white'>
+          <motion.ul
+            className='flex md:hidden flex-col items-center gap-3'
+            variants={container}
+            initial='hidden'
+            animate='show'
+          >
+            {navLinks.map((link) => (
+              <motion.li variants={item} key={link.name}>
+                <a
+                  href={link.href}
+                  className={subMenuLinkStyles}
+                  onClick={() => setIsToggled(false)}
+                >
+                  {link.name}
+                </a>
+              </motion.li>
+            ))}
+          </motion.ul>
+        </motion.div>
       )}
-    </motion.nav>
+    </nav>
   );
 }

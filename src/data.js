@@ -7,6 +7,14 @@ export const myName = 'Nat Watkins';
 // Nav logo text
 export const navLogoText = 'Nat Watkins'; 
 
+// Nav bar items
+export const navLinks = [
+  { name: 'Projects', href: '/#projects' },
+  { name: 'About', href: '/#about' },
+  { name: 'Contact', href: '/#contact' },
+  { name: 'Resume', href: '/nat-watkins-resume.pdf' }
+];
+
 // Bio
 export const myBio = 'UX Researcher, Designer, and Front End Developer. Ideally, in that order.';
 
@@ -47,16 +55,9 @@ export const projects = [
   {
     title: 'I wrote this.',
     name: 'Article',
-    link: '#',
+    link: 'https://www.wired.com/story/big-tech-patent-intellectual-property/',
     imageUrl: '/images/article-bg.png'
   }
-];
-
-// Nav bar items
-export const navLinks = [
-  { name: 'About', href: '/#about' },
-  { name: 'Contact', href: '/#contact' },
-  { name: 'Resume', href: '/nat-watkins-resume.pdf' }
 ];
 
 // Skills tags
