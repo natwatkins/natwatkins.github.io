@@ -4,8 +4,8 @@ import { navLogoText } from '../data';
 
 export default function Navbar({ navLinks }) {
   const [isToggled, setIsToggled] = useState(false);
-  const subMenuLinkStyles = `text-xl text-slate-700 hover:text-slate-950 transition-all duration-[0.3s]`;
-  const MenuLinkStyles = `text-md font-semibold text-slate-950 hover:text-orange-700 transition-all duration-[0.3s]`;
+  const subMenuLinkStyles = `uppercase tracking-wider text-sm font-semibold text-xl text-slate-950 hover:text-orange-700 transition-all duration-[0.3s]`;
+  const MenuLinkStyles = `uppercase tracking-wider text-sm font-semibold text-slate-950 hover:text-orange-700 transition-all duration-[0.3s]`;
   const container = {
     hidden: { opacity: 0 },
     show: {
@@ -24,7 +24,7 @@ export default function Navbar({ navLinks }) {
   return (
     <nav className='fixed top-0 left-0 w-full z-50 bg-white shadow-sm'>
       <div className='flex justify-between items-center p-5'>
-        <a href='/' className='logo text-md font-bold'>
+        <a href='/' className='logo text-md font-semibold text-slate-950 hover:text-orange-700 transition-all duration-[0.3s]'>
           {navLogoText ? navLogoText : 'Aether.'}
         </a>
         <div className='links'>

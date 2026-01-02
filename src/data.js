@@ -22,12 +22,12 @@ export const myBio = 'UX Researcher, Designer, and Front End Developer. Ideally,
 export const projects = [
   {
     title: 'I researched, designed, and developed these websites.',
-    name: 'AB2D Claims Data API',
+    name: 'CMS Claims Data APIs',
     link: 'https://ab2d.cms.gov/',
   },
   {
-    title: 'I researched and designed this application portal.',
-    name: 'New Jersey Unemployment',
+    title: 'I researched and designed this portal for the state of New Jersey.',
+    name: 'NJ Unemployment Insurance',
     link: 'https://www.nj.gov/labor/myunemployment/help/newapp.shtml',
     imageUrl: '/nj-dol.png'
   },
@@ -64,6 +64,7 @@ export const aboutMe = 'I have over 8 years of experience in digital and governm
 export const skills = [
   'User Research and Testing',
   'Accessibility',
+  'Agile',
   'Interaction Design',
   'Human-Centered Design',
   'Front End Development',
@@ -72,7 +73,6 @@ export const skills = [
   'HTML / CSS / JavaScript',
   'Front End Frameworks',
   'AI Tooling',
-  'Agile',
 ];
 
 // Contact options
