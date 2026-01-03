@@ -1,0 +1,239 @@
+---
+import MainLayout from '../layouts/MainLayout.astro';
+import Link from '../components/Link.astro';
+---
+
+<MainLayout title="Claims Data API Websites">
+  <section class="max-w-3xl mx-auto px-4 md:px-6 lg:px-8 py-12 text-slate-900 mt-24">
+    <header class="mb-10">
+        <h1 class="text-4xl md:text-5xl font-extrabold mb-4">Claims Data API Websites</h1>
+        <section class="mb-10 bg-orange-100 p-4 border-l-4 border-orange-600">
+            <p class="italic text-slate-900">
+                Note: This work is public and open-source, but some details about the process have been omitted for confidentiality.
+            </p>
+        </section>
+    </header>
+
+    <section class="mb-10">
+      <h2 class="heading text-slate-900 uppercase tracking-wider font-semibold">
+        The Product
+    </h2>
+      <p>
+        <Link text="The Centers for Medicaid and Medicare (CMS)" href="https://www.cms.gov/" /> 
+        maintain four FHIR APIs that allow providers, payers,
+        and patients to securely access interoperable healthcare claims data: 
+        <Link text="AB2D" href="https://ab2d.cms.gov" />,
+        <Link text="BCDA" href="https://bcda.cms.gov" />,
+        <Link text="DPC" href="https://dpc.cms.gov" />, and
+        <Link text="Blue Button" href="https://bluebutton.cms.gov" />.
+      </p>
+
+    </section>
+
+    <section class="mb-10">
+      <h2 class="heading text-slate-900 uppercase tracking-wider font-semibold">Goal</h2>
+      <p>
+        CMS wanted to identify barriers to adoption and increase the number of organizations using the APIs in production.
+      </p>
+    </section>
+
+    <section class="mb-10">
+      <h2 class="heading text-slate-900 uppercase tracking-wider font-semibold">My Role</h2>
+      <p>
+        I led strategy for this effort and contributed to research, design, and front end development.
+        I worked closely with a talented team of content strategists, product managers, and developers.
+      </p>
+    </section>
+  </section>
+
+  <section class="mb-10 -mx-4 md:-mx-6 lg:-mx-8">
+    <div class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8">
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+        <figure class="bg-white rounded-md shadow overflow-hidden">
+          <div class="aspect-[3/4] bg-slate-100">
+            <img src="/project-images/ab2d-home.png" alt="AB2D home" class="w-full h-full object-cover" />
+          </div>
+        </figure>
+
+        <figure class="bg-white rounded-md shadow overflow-hidden">
+          <div class="aspect-[3/4] bg-slate-100">
+            <img src="/project-images/bb-home.png" alt="Blue Button home" class="w-full h-full object-cover" />
+          </div>
+        </figure>
+
+        <figure class="bg-white rounded-md shadow overflow-hidden">
+          <div class="aspect-[3/4] bg-slate-100">
+            <img src="/project-images/bcda-home.png" alt="BCDA home" class="w-full h-full object-cover" />
+          </div>
+        </figure>
+      </div>
+    </div>
+  </section>
+
+  <section class="max-w-3xl mx-auto px-4 md:px-6 lg:px-8 py-12 text-slate-900 mt-0 mb-10">
+
+    <section class="mb-10">
+      <h2 class="text-2xl font-bold mb-2">Highlights</h2>
+      
+      <ul class="list-disc list-outside pl-6 space-y-1 mt-4">
+        <li><strong>3 websites</strong> launched in 2025</li>
+        <li>An average of <strong>7,442 unique users</strong> visit the redesigned sites every week</li>
+        <li><strong>33,647,348 beneficiaries served</strong> by these API websites (as of Nov. 2025)</li>
+        <li>AB2D experienced a <strong>115% increase of average visitors</strong> per month after launch</li>
+        <li>BCDA experienced a <strong>68% increase of average visitors</strong> per month after launch</li>
+        <li>
+          Blue Button became one of the first government sites to leverage Astro
+          for a fast, modern front-end framework (to our knowledge)
+        </li>
+        <li>
+          Published <strong>8 revamped use cases</strong> and <strong>1 major white paper</strong> based on realistic applications identified in user research
+        </li>
+        <li>
+          CMS now emphasizes open-source, transparency, and developer UX across API documentation and resources.
+        </li>
+      </ul>
+    </section>
+
+  <section>
+    <div class="h-px my-10 bg-slate-300 w-full"></div>
+  </section>
+
+    <section class="mb-10">
+      <h2 class="text-3xl font-bold my-6">Process</h2>
+      <h3 class="text-2xl font-bold mb-2">Phase 1: User Research</h3>
+
+      <h4 class="heading text-slate-900 uppercase tracking-wider font-semibold py-3">Methods</h4>
+      <ul class="list-disc list-outside pl-6 space-y-1">
+        <li>Exploratory user interviews</li>
+        <li>Journey mapping</li>
+        <li>Gap analysis</li>
+      </ul>
+
+      <figure class="bg-white rounded-md shadow overflow-hidden my-6">
+        <img src="/project-images/journey-map.png" alt="Journey map" class="" />
+      </figure>
+
+      <h4 class="heading text-slate-900 uppercase tracking-wider font-semibold py-3">Findings</h4>
+      <ul class="list-disc list-outside pl-6 space-y-1">
+        <li>Pain points for developer users and non-technical users</li>
+        <li>
+          Obstacles in the journey to production, including detailed feedback on the high
+          technical barrier to entry
+        </li>
+        <li>Gaps in API documentation</li>
+        <li>Updated value propositions informed by user experience (image: quote.png)</li>
+        <li>
+          Use cases for each API. These findings later helped us publish use case reports
+          and white papers.
+        </li>
+      </ul>
+    </section>
+
+    <section class="mb-10">
+      <h3 class="text-2xl font-bold mb-2">Phase 2: Standardization Strategy</h3>
+      <p>
+        I recommended that we apply research findings to improve the public website and documentation
+        for AB2D, then extend this effort to other APIs. This strategy to standardize emphasized
+        joint research efforts, a repeatable approach, and pre-built web templates that could be
+        used across all four APIs.
+      </p>
+      <p>(image: current-state-xxxx.png x4)</p>
+
+      <h4 class="heading text-slate-900 uppercase tracking-wider font-semibold py-3">Key Strategy Points</h4>
+      <ul class="list-disc list-outside pl-6 space-y-1">
+        <li>Leveraging USWDS</li>
+        <li>Content-first approach, with focus on developer experience (dev-x)</li>
+        <li>The Diataxis framework</li>
+        <li>Rapid prototyping and usability testing</li>
+        <li>Universal information architecture and steps to onboard</li>
+        <li>Developing maintainable, reusable, user-validated web templates</li>
+        <li>
+          Enabling all teammates to easily update the websites, even without front-end expertise
+        </li>
+      </ul>
+    </section>
+
+    <section class="mb-10">
+      <h3 class="text-2xl font-bold mb-2">Phase 3: Design – AB2D</h3>
+
+      <h4 class="heading text-slate-900 uppercase tracking-wider font-semibold py-3">Methods</h4>
+      <ul class="list-disc list-outside pl-6 space-y-1">
+        <li>Current-state analysis</li>
+        <li>Card sort (image: card-sort.png)</li>
+        <li>Competitive analysis (image: competitive-analysis.png)</li>
+        <li>Usability testing</li>
+        <li>Web analytics (image: before-web-analytics.png)</li>
+      </ul>
+
+      <p>
+        Working with a brilliant content strategist and an infinitely patient team of developers,
+        we spent several months mocking up and testing key user flows and improved documentation
+        for a single API, AB2D.
+      </p>
+
+      <p>
+        Crucially, we kept in close contact with Product Managers and stakeholders from other APIs
+        to ensure that designs met the needs for each API’s unique features and user needs.
+      </p>
+
+      <p>
+        34 of 36 task flows using new information architecture were validated by users
+        (image: task-flows.png)
+      </p>
+    </section>
+
+    <section class="mb-10">
+      <h3 class="text-2xl font-bold mb-2">Phase 4: Implementation – AB2D</h3>
+
+      <h4 class="heading text-slate-900 uppercase tracking-wider font-semibold py-3">Approach</h4>
+      <ul class="list-disc list-outside pl-6 space-y-1">
+        <li>Ruby + Jekyll + USWDS</li>
+        <li>Later, we were one of the first government websites to move to Astro</li>
+      </ul>
+
+      <p>
+        Designs were implemented in a staging environment on a page-by-page basis,
+        allowing for simultaneous, agile development.
+      </p>
+
+      <p>
+        We used markdown and TypeScript to create intuitive code components that extended
+        USWDS within guardrails, allowing non-technical teammates to contribute to code.
+      </p>
+
+      <p>
+        (image: process-list-design.png) + (image: process-list-code.png)
+      </p>
+
+      <p>
+        After all pages had been implemented and user-tested, the full website was publicly
+        launched at ab2d.cms.gov.
+      </p>
+    </section>
+
+    <section class="mb-10">
+      <h3 class="text-2xl font-bold mb-2">Phase 5: Implementation – BCDA, DPC, Blue Button</h3>
+
+      <p>
+        Since designs and front-end templates were already built and validated by users,
+        we were able to paste content directly into staging, skipping prototypes altogether.
+      </p>
+
+      <ul class="list-disc list-outside pl-6 space-y-1">
+        <li>Three websites launched in 2025 (image: xxxx-home.png x3)</li>
+        <li>
+          Time to launch decreased exponentially with each release, with the most recent
+          end-to-end redesign (Blue Button) completed in under 3 months.
+        </li>
+        <li>
+          Other teams at CMS have used these standard templates to independently spin up
+          similar websites.
+        </li>
+        <li>
+          Non-technical teammates have been able to successfully update and contribute
+          to the API websites. One even made a blog.
+        </li>
+      </ul>
+    </section>
+  </section>
+</MainLayout>
