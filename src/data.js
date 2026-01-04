@@ -23,7 +23,7 @@ export const projects = [
   {
     title: 'I researched, designed, and developed these websites.',
     name: 'CMS Claims Data APIs',
-    link: 'https://ab2d.cms.gov/',
+    link: '/claims-data-apis',
   },
   {
     title: 'I researched and designed this portal for the state of New Jersey.',

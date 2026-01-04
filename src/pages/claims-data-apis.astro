@@ -1,13 +1,14 @@
 ---
 import MainLayout from '../layouts/MainLayout.astro';
 import Link from '../components/Link.astro';
+import Lightbox from '../components/Lightbox.astro';
 ---
 
 <MainLayout title="Claims Data API Websites">
   <section class="max-w-3xl mx-auto px-4 md:px-6 lg:px-8 py-12 text-slate-900 mt-24">
     <header class="mb-10">
         <h1 class="text-4xl md:text-5xl font-extrabold mb-4">Claims Data API Websites</h1>
-        <section class="mb-10 bg-orange-100 p-4 border-l-4 border-orange-600">
+        <section class="mb-10 bg-gray-100 p-4 border-l-4 border-gray-400">
             <p class="italic text-slate-900">
                 Note: This work is public and open-source, but some details about the process have been omitted for confidentiality.
             </p>
@@ -40,8 +41,7 @@ import Link from '../components/Link.astro';
     <section class="mb-10">
       <h2 class="heading text-slate-900 uppercase tracking-wider font-semibold">My Role</h2>
       <p>
-        I led strategy for this effort and contributed to research, design, and front end development.
-        I worked closely with a talented team of content strategists, product managers, and developers.
+        I led strategy for this effort and contributed to research, design, and front end development. I worked closely with a talented team of content strategists, product managers, and developers.
       </p>
     </section>
   </section>
@@ -51,19 +51,25 @@ import Link from '../components/Link.astro';
       <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
         <figure class="bg-white rounded-md shadow overflow-hidden">
           <div class="aspect-[3/4] bg-slate-100">
-            <img src="/project-images/ab2d-home.png" alt="AB2D home" class="w-full h-full object-cover" />
+            <a href="/project-images/ab2d-home.png" data-lightbox aria-label="Open AB2D home in full size">
+              <img src="/project-images/ab2d-home.png" alt="AB2D home" class="w-full h-full object-cover" />
+            </a>
           </div>
         </figure>
 
         <figure class="bg-white rounded-md shadow overflow-hidden">
           <div class="aspect-[3/4] bg-slate-100">
-            <img src="/project-images/bb-home.png" alt="Blue Button home" class="w-full h-full object-cover" />
+            <a href="/project-images/bb-home.png" data-lightbox aria-label="Open Blue Button home in full size">
+              <img src="/project-images/bb-home.png" alt="Blue Button home" class="w-full h-full object-cover" />
+            </a>
           </div>
         </figure>
 
         <figure class="bg-white rounded-md shadow overflow-hidden">
           <div class="aspect-[3/4] bg-slate-100">
-            <img src="/project-images/bcda-home.png" alt="BCDA home" class="w-full h-full object-cover" />
+            <a href="/project-images/bcda-home.png" data-lightbox aria-label="Open BCDA home in full size">
+              <img src="/project-images/bcda-home.png" alt="BCDA home" class="w-full h-full object-cover" />
+            </a>
           </div>
         </figure>
       </div>
@@ -73,20 +79,20 @@ import Link from '../components/Link.astro';
   <section class="max-w-3xl mx-auto px-4 md:px-6 lg:px-8 py-12 text-slate-900 mt-0 mb-10">
 
     <section class="mb-10">
-      <h2 class="text-2xl font-bold mb-2">Highlights</h2>
+      <h2 class="text-2xl font-bold mb-2" id="highlights">Highlights</h2>
       
       <ul class="list-disc list-outside pl-6 space-y-1 mt-4">
-        <li><strong>3 websites</strong> launched in 2025</li>
-        <li>An average of <strong>7,442 unique users</strong> visit the redesigned sites every week</li>
-        <li><strong>33,647,348 beneficiaries served</strong> by these API websites (as of Nov. 2025)</li>
-        <li>AB2D experienced a <strong>115% increase of average visitors</strong> per month after launch</li>
-        <li>BCDA experienced a <strong>68% increase of average visitors</strong> per month after launch</li>
+        <li><strong>3 websites</strong> launched in 2025.</li>
+        <li>An average of <strong>7,442 unique users</strong> visit the redesigned sites every week.</li>
+        <li><strong>33,647,348 beneficiaries served</strong> by these API websites (as of Nov. 2025).</li>
+        <li>AB2D experienced a <strong>115% increase of average visitors</strong> per month after launch.</li>
+        <li>BCDA experienced a <strong>68% increase of average visitors</strong> per month after launch.</li>
         <li>
           Blue Button became one of the first government sites to leverage Astro
-          for a fast, modern front-end framework (to our knowledge)
+          for a fast, modern front-end framework (to our knowledge).
         </li>
         <li>
-          Published <strong>8 revamped use cases</strong> and <strong>1 major white paper</strong> based on realistic applications identified in user research
+          Published <strong>8 revamped use cases</strong> and <strong>1 major <Link text="white paper" href="https://ab2d.cms.gov/mtm-white-paper" /></strong> based on realistic applications identified in user research.
         </li>
         <li>
           CMS now emphasizes open-source, transparency, and developer UX across API documentation and resources.
@@ -100,6 +106,11 @@ import Link from '../components/Link.astro';
 
     <section class="mb-10">
       <h2 class="text-3xl font-bold my-6">Process</h2>
+<!--       <figure class="bg-white rounded-md shadow overflow-hidden my-6">
+        <a href="/project-images/timeline.png" data-lightbox aria-label="Open journey map in full size">
+          <img src="/project-images/timeline.png" alt="Timeline" class="w-full h-auto object-contain" />
+        </a>
+      </figure> -->
       <h3 class="text-2xl font-bold mb-2">Phase 1: User Research</h3>
 
       <h4 class="heading text-slate-900 uppercase tracking-wider font-semibold py-3">Methods</h4>
@@ -110,40 +121,51 @@ import Link from '../components/Link.astro';
       </ul>
 
       <figure class="bg-white rounded-md shadow overflow-hidden my-6">
-        <img src="/project-images/journey-map.png" alt="Journey map" class="" />
+        <a href="/project-images/journey-map.png" data-lightbox aria-label="Open journey map in full size">
+          <img src="/project-images/journey-map.png" alt="Journey map" class="w-full h-auto object-contain" />
+        </a>
+        <p class="p-4 text-sm text-slate-900">
+            User journey map across all Bulk FHIR APIs, synthesizing pain points and opportunities identified in user interviews.         
+        </p>
       </figure>
 
       <h4 class="heading text-slate-900 uppercase tracking-wider font-semibold py-3">Findings</h4>
       <ul class="list-disc list-outside pl-6 space-y-1">
         <li>Pain points for developer users and non-technical users</li>
         <li>
-          Obstacles in the journey to production, including detailed feedback on the high
-          technical barrier to entry
+          Obstacles in the journey to production, including detailed feedback on the high technical barrier to entry
         </li>
         <li>Gaps in API documentation</li>
-        <li>Updated value propositions informed by user experience (image: quote.png)</li>
+        <li>Updated value propositions informed by user experience</li>
         <li>
-          Use cases for each API. These findings later helped us publish use case reports
-          and white papers.
+          Use cases for each API, which were later used to publish case studies and white papers.
         </li>
       </ul>
+    </section>
+
+    <section class="mb-10 bg-orange-100 p-4 border-l-4 border-orange-600">
+        <p class="italic text-slate-900 text-lg">
+            "It was just an email thread that went around that was like 'Is anybody interested in this? Does anyone have any utilization?' and that's how we got started."
+        </p>
+        <p class="italic text-slate-900 text-lg pt-2">
+            — AB2D User
+        </p>
     </section>
 
     <section class="mb-10">
       <h3 class="text-2xl font-bold mb-2">Phase 2: Standardization Strategy</h3>
       <p>
-        I recommended that we apply research findings to improve the public website and documentation
-        for AB2D, then extend this effort to other APIs. This strategy to standardize emphasized
-        joint research efforts, a repeatable approach, and pre-built web templates that could be
-        used across all four APIs.
+        I recommended that we apply research findings to improve the public website and documentation for AB2D, then extend this effort to other APIs. This strategy to standardize emphasized joint research efforts, a repeatable approach, and pre-built web templates that could be used across all four APIs.
       </p>
-      <p>(image: current-state-xxxx.png x4)</p>
+      <!-- image: current states -->
 
       <h4 class="heading text-slate-900 uppercase tracking-wider font-semibold py-3">Key Strategy Points</h4>
       <ul class="list-disc list-outside pl-6 space-y-1">
-        <li>Leveraging USWDS</li>
-        <li>Content-first approach, with focus on developer experience (dev-x)</li>
-        <li>The Diataxis framework</li>
+        <li>
+            Leveraging <Link text="USWDS" href="https://designsystem.digital.gov/" />
+        </li>
+        <li>Content-first approach, with focus on developer experience (Dev-X)</li>
+        <li>The <Link text="Diataxis" href="https://diataxis.fr/" /> framework</li>
         <li>Rapid prototyping and usability testing</li>
         <li>Universal information architecture and steps to onboard</li>
         <li>Developing maintainable, reusable, user-validated web templates</li>
@@ -151,89 +173,150 @@ import Link from '../components/Link.astro';
           Enabling all teammates to easily update the websites, even without front-end expertise
         </li>
       </ul>
+
+      <figure class="bg-white rounded-md shadow overflow-hidden my-6">
+        <a href="/project-images/competitive-analysis.png" data-lightbox aria-label="Open journey map in full size">
+          <img src="/project-images/competitive-analysis.png" alt="Competitive analysis" class="w-full h-auto object-contain" />
+          <p class="p-4 text-sm text-slate-900">
+            A high-level snapshot of information architecture across similar Dev-X websites reveals competitve industry standards and Diataxis principles.
+          </p>
+        </a>
+      </figure>
     </section>
 
     <section class="mb-10">
-      <h3 class="text-2xl font-bold mb-2">Phase 3: Design – AB2D</h3>
+      <h3 class="text-2xl font-bold mb-2">Phase 3: Design</h3>
 
       <h4 class="heading text-slate-900 uppercase tracking-wider font-semibold py-3">Methods</h4>
       <ul class="list-disc list-outside pl-6 space-y-1">
         <li>Current-state analysis</li>
-        <li>Card sort (image: card-sort.png)</li>
-        <li>Competitive analysis (image: competitive-analysis.png)</li>
+        <li>Card sort</li>
+        <li>Competitive analysis</li>
         <li>Usability testing</li>
-        <li>Web analytics (image: before-web-analytics.png)</li>
+        <li>Web analytics</li>
       </ul>
 
-      <p>
-        Working with a brilliant content strategist and an infinitely patient team of developers,
-        we spent several months mocking up and testing key user flows and improved documentation
-        for a single API, AB2D.
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <figure class="bg-white rounded-md shadow overflow-hidden my-6">
+            <a href="/project-images/card-sort.png" data-lightbox aria-label="Open card sort in full size">
+            <img src="/project-images/card-sort.png" alt="Card sort" class="w-full h-auto object-contain" />
+            </a>
+            <p class="p-4 text-sm text-slate-900">
+                Card sort exercise 
+            </p>
+        </figure>
+
+        <figure class="bg-white rounded-md shadow overflow-hidden my-6">
+            <a href="/project-images/before-web-analytics.png" data-lightbox aria-label="Open journey map in full size">
+            <img src="/project-images/before-web-analytics.png" alt="Before web analytics" class="w-full h-auto object-contain" />
+            </a>
+            <p class="p-4 text-sm text-slate-900">
+                Web analytics sample 
+            </p>
+        </figure>
+      </div>
+
+      <p class="mt-4">
+        We spent several sprints mocking up and testing key user flows and improved documentation for a single API, AB2D. We could extend these learnings and to other APIs down the road to save time and to reinforce standardized practices.
       </p>
 
-      <p>
-        Crucially, we kept in close contact with Product Managers and stakeholders from other APIs
-        to ensure that designs met the needs for each API’s unique features and user needs.
+      <p class="mt-4">
+        Crucially, we kept in close contact with Product Managers and stakeholders from other APIs throughout prototyping. This ensured that designs were universalized for each API's unique features and user needs.
       </p>
 
-      <p>
-        34 of 36 task flows using new information architecture were validated by users
-        (image: task-flows.png)
+      <p class="mt-4">
+       In testing, the majority of users sorted 34/36 task flows into the same category/page. This validated the robustness and accuracy of the new information architecture.
       </p>
+
+      <figure class="bg-white rounded-md shadow overflow-hidden my-6">
+            <a href="/project-images/task-flows.png" data-lightbox aria-label="Open journey map in full size">
+            <img src="/project-images/task-flows.png" alt="Task flows" class="w-full h-auto object-contain" />
+            </a>
+            <p class="p-4 text-sm text-slate-900">
+                Results of testing for key task flows shows agreement among the majority of users.
+            </p>
+        </figure>
     </section>
 
     <section class="mb-10">
-      <h3 class="text-2xl font-bold mb-2">Phase 4: Implementation – AB2D</h3>
+      <h3 class="text-2xl font-bold mb-2">Phase 4: AB2D Implementation</h3>
+
+      <h4 class="heading text-slate-900 uppercase tracking-wider font-semibold py-3">Framework</h4>
+      <ul class="list-disc list-outside pl-6 space-y-1">
+        <li><Link text="Ruby + Jekyll + USWDS" href="https://github.com/navapbc/template-jekyll-uswds" /></li>
+        <li>Later, Blue Button became one of the first government websites to move to <Link text="Astro" href="astro" /></li>
+      </ul>
 
       <h4 class="heading text-slate-900 uppercase tracking-wider font-semibold py-3">Approach</h4>
-      <ul class="list-disc list-outside pl-6 space-y-1">
-        <li>Ruby + Jekyll + USWDS</li>
-        <li>Later, we were one of the first government websites to move to Astro</li>
-      </ul>
 
       <p>
         Designs were implemented in a staging environment on a page-by-page basis,
         allowing for simultaneous, agile development.
       </p>
 
-      <p>
-        We used markdown and TypeScript to create intuitive code components that extended
-        USWDS within guardrails, allowing non-technical teammates to contribute to code.
+      <p class="mt-4">
+        We used <Link text="Markdown" href="https://www.markdownguide.org" /> and <Link text="TypeScript" href="https://www.typescriptlang.org" /> to create intuitive code components that extended USWDS within guardrails, allowing non-technical teammates to contribute to code.
       </p>
 
-      <p>
-        (image: process-list-design.png) + (image: process-list-code.png)
-      </p>
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <figure class="bg-white rounded-md shadow overflow-hidden my-6">
+            <a href="/project-images/process-list-design.png" data-lightbox aria-label="Open card sort in full size">
+            <img src="/project-images/process-list-design.png" alt="Process list design" class="w-full h-auto object-contain" />
+            </a>
+            <p class="p-4 text-sm text-slate-900">
+                Design for the process list component
+            </p>
+        </figure>
 
-      <p>
-        After all pages had been implemented and user-tested, the full website was publicly
-        launched at ab2d.cms.gov.
+        <figure class="bg-white rounded-md shadow overflow-hidden my-6">
+            <a href="/project-images/process-list-code.png" data-lightbox aria-label="Open journey map in full size">
+            <img src="/project-images/process-list-code.png" alt="Process list code" class="w-full h-auto object-contain" />
+            </a>
+            <p class="p-4 text-sm text-slate-900">
+                Code for the process list component 
+            </p>
+        </figure>
+      </div>
+
+      <p class="mt-4">
+        After all pages had been implemented and user-tested, the full website was publicly launched at <Link text="https://ab2d.cms.gov/" href="https://ab2d.cms.gov/" />.
       </p>
     </section>
 
     <section class="mb-10">
-      <h3 class="text-2xl font-bold mb-2">Phase 5: Implementation – BCDA, DPC, Blue Button</h3>
+      <h3 class="text-2xl font-bold mb-2">Phase 5: Standardized Implementation</h3>
 
-      <p>
-        Since designs and front-end templates were already built and validated by users,
-        we were able to paste content directly into staging, skipping prototypes altogether.
+      <p class="mt-4">
+        Since information architecture, layouts, and front-end templates were already built and validated by users, we were able to skip the design stage altogether and implement new content directly in staging. 
+      </p>
+        
+      <p class="mt-4">
+        <strong>We developed the following sites in weeks instead of months, then days instead of weeks.</strong>
       </p>
 
-      <ul class="list-disc list-outside pl-6 space-y-1">
-        <li>Three websites launched in 2025 (image: xxxx-home.png x3)</li>
+      <ul class="list-disc list-outside pl-6 space-y-1 mt-4">
+        <li>3 websites launched in 2025. Scroll back up to <a class="underline text-orange-700 hover:text-orange-800" href="#highlights">the highlights.</a></li>
         <li>
-          Time to launch decreased exponentially with each release, with the most recent
-          end-to-end redesign (Blue Button) completed in under 3 months.
+          Other teams at CMS are using these open-source, standard templates to independently spin up similar websites.
         </li>
         <li>
-          Other teams at CMS have used these standard templates to independently spin up
-          similar websites.
+          Reduction in support requests from users following the release of improved sites and documentation.
         </li>
         <li>
-          Non-technical teammates have been able to successfully update and contribute
-          to the API websites. One even made a blog.
+          Nava published a <Link text="Case Study" href="https://www.navapbc.com/case-studies/improving-medicare-coordination-api" /> about this effort in the Annual Public Benfit Report.
+        <li>
+          Non-technical teammates have been able to successfully update and contribute to the API websites, proving maintainability. One content writer even made <Link text="a blog" href="https://bcda.cms.gov/announcements.html" />.
         </li>
       </ul>
+
+      <figure class="bg-white rounded-md shadow overflow-hidden my-6">
+        <a href="/project-images/case-study.png" data-lightbox aria-label="Open case study in full size">
+          <img src="/project-images/case-study.png" alt="Case study" class="w-full h-auto object-contain" />
+        </a>
+        <p class="p-4 text-sm text-slate-900">
+            Read the <Link text="Case Study" href="https://www.navapbc.com/case-studies/improving-medicare-coordination-api" />.        
+        </p>
+      </figure>
     </section>
   </section>
 </MainLayout>

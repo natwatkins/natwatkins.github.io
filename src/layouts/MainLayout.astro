@@ -4,6 +4,7 @@ const {
   description = 'UX Researcher, Designer, and Front End Developer.',
 } = Astro.props;
 import Navbar from '../components/Navbar';
+import Lightbox from '../components/Lightbox.astro';
 import { isTransitionEnabled, navLinks } from '../data';
 import '../styles/styles.css';
 import { ViewTransitions } from 'astro:transitions';
@@ -23,5 +24,6 @@ import { ViewTransitions } from 'astro:transitions';
   <body>
     <Navbar navLinks={navLinks} client:load />
     <slot />
+    <Lightbox />
   </body>
 </html>
