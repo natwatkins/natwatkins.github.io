@@ -2,6 +2,7 @@
 import MainLayout from '../layouts/MainLayout.astro';
 import Link from '../components/Link.astro';
 import Lightbox from '../components/Lightbox.astro';
+import { text } from 'framer-motion/client';
 ---
 
 <MainLayout title="Claims Data API Websites">
@@ -21,7 +22,7 @@ import Lightbox from '../components/Lightbox.astro';
     </h2>
       <p>
         <Link text="The Centers for Medicaid and Medicare (CMS)" href="https://www.cms.gov/" /> 
-        maintain four FHIR APIs that allow providers, payers,
+        maintain four <Link text="FHIR" href="https://www.hl7.org/fhir/" /> APIs that allow providers, payers,
         and patients to securely access interoperable healthcare claims data: 
         <Link text="AB2D" href="https://ab2d.cms.gov" />,
         <Link text="BCDA" href="https://bcda.cms.gov" />,
@@ -34,8 +35,8 @@ import Lightbox from '../components/Lightbox.astro';
     <section class="mb-10">
       <h2 class="heading text-slate-900 uppercase tracking-wider font-semibold">Goal</h2>
       <p>
-        CMS wanted to identify barriers to adoption and increase the number of organizations using the APIs in production.
-      </p>
+        Our CMS office's overarching goal was to increase the number of beneficiaries served. My team's specific objective under this goal was to identify barriers to adoption and boost customer engagement, both for the APIs and for the relatively new FHIR standard. 
+        </p>
     </section>
 
     <section class="mb-10">
@@ -82,20 +83,16 @@ import Lightbox from '../components/Lightbox.astro';
       <h2 class="text-2xl font-bold mb-2" id="highlights">Highlights</h2>
       
       <ul class="list-disc list-outside pl-6 space-y-1 mt-4">
-        <li><strong>3 websites</strong> launched in 2025.</li>
+        <li><strong>3 websites</strong> launched in 2025: <Link text="AB2D" href="https://ab2d.cms.gov" />, <Link text="BCDA" href="https://bcda.cms.gov" />, and <Link text="Blue Button" href="https://bluebutton.cms.gov" />.</li>
         <li>An average of <strong>7,442 unique users</strong> visit the redesigned sites every week.</li>
         <li><strong>33,647,348 beneficiaries served</strong> by these API websites (as of Nov. 2025).</li>
         <li>AB2D experienced a <strong>115% increase of average visitors</strong> per month after launch.</li>
         <li>BCDA experienced a <strong>68% increase of average visitors</strong> per month after launch.</li>
         <li>
-          Blue Button became one of the first government sites to leverage Astro
-          for a fast, modern front-end framework (to our knowledge).
-        </li>
-        <li>
           Published <strong>8 revamped use cases</strong> and <strong>1 major <Link text="white paper" href="https://ab2d.cms.gov/mtm-white-paper" /></strong> based on realistic applications identified in user research.
         </li>
         <li>
-          CMS now emphasizes open-source, transparency, and developer UX across API documentation and resources.
+          CMS now emphasizes open-source, transparency, and developer UX across claims data API documentation and resources.
         </li>
       </ul>
     </section>
@@ -133,29 +130,27 @@ import Lightbox from '../components/Lightbox.astro';
       <ul class="list-disc list-outside pl-6 space-y-1">
         <li>Pain points for developer users and non-technical users</li>
         <li>
-          Obstacles in the journey to production, including detailed feedback on the high technical barrier to entry
+          Obstacles in the journey to mature production utilization, including detailed feedback on the high technical barrier to entry
         </li>
         <li>Gaps in API documentation</li>
-        <li>Updated value propositions informed by user experience</li>
+        <li>Updated value propositions informed by user applications for the data</li>
         <li>
-          Use cases for each API, which were later used to publish case studies and white papers.
+          Use cases for each API, which were also used to publish additional enablement resources
         </li>
       </ul>
     </section>
 
     <section class="mb-10 bg-orange-100 p-4 border-l-4 border-orange-600">
         <p class="italic text-slate-900 text-lg">
-            "It was just an email thread that went around that was like 'Is anybody interested in this? Does anyone have any utilization?' and that's how we got started."
+            3 out of 5 users interviewed learned about AB2D "coincidentally" or "almost by chance" from a chain email or newsletter that went around their office. 
         </p>
-        <p class="italic text-slate-900 text-lg pt-2">
-            — AB2D User
-        </p>
+
     </section>
 
     <section class="mb-10">
       <h3 class="text-2xl font-bold mb-2">Phase 2: Standardization Strategy</h3>
       <p>
-        I recommended that we apply research findings to improve the public website and documentation for AB2D, then extend this effort to other APIs. This strategy to standardize emphasized joint research efforts, a repeatable approach, and pre-built web templates that could be used across all four APIs.
+        I recommended that we apply research findings to improve the public marketing website and written technical documentation for a single API (AB2D), then extend this effort to other APIs. This strategy to standardize emphasized joint research efforts, a repeatable approach, and pre-built web templates that could be used across all four APIs.
       </p>
       <!-- image: current states -->
 
@@ -164,21 +159,22 @@ import Lightbox from '../components/Lightbox.astro';
         <li>
             Leveraging <Link text="USWDS" href="https://designsystem.digital.gov/" />
         </li>
-        <li>Content-first approach, with focus on developer experience (Dev-X)</li>
+        <li>A content-first approach, with focus on developer experience (Dev-X)</li>
         <li>The <Link text="Diataxis" href="https://diataxis.fr/" /> framework</li>
-        <li>Rapid prototyping and usability testing</li>
-        <li>Universal information architecture and steps to onboard</li>
-        <li>Developing maintainable, reusable, user-validated web templates</li>
+        <li>Human-centered design (HCD)</li>
+        <li>Universal information architecture across all websites</li>
         <li>
-          Enabling all teammates to easily update the websites, even without front-end expertise
+          Maintainable, templatized, and intuitive web templates that enabled non-technical users to update content without front-end expertise
         </li>
+        <li>Relying on standardization wherever possible to minimize repeated efforts across API websites</li>
+
       </ul>
 
       <figure class="bg-white rounded-md shadow overflow-hidden my-6">
         <a href="/project-images/competitive-analysis.png" data-lightbox aria-label="Open journey map in full size">
           <img src="/project-images/competitive-analysis.png" alt="Competitive analysis" class="w-full h-auto object-contain" />
           <p class="p-4 text-sm text-slate-900">
-            A high-level snapshot of information architecture across similar Dev-X websites reveals competitve industry standards and Diataxis principles.
+            A high-level snapshot of information architecture across similar Dev-X websites reveals industry standards and Diataxis principles.
           </p>
         </a>
       </figure>
@@ -189,11 +185,11 @@ import Lightbox from '../components/Lightbox.astro';
 
       <h4 class="heading text-slate-900 uppercase tracking-wider font-semibold py-3">Methods</h4>
       <ul class="list-disc list-outside pl-6 space-y-1">
-        <li>Current-state analysis</li>
+        <li>Current state analysis</li>
         <li>Card sort</li>
         <li>Competitive analysis</li>
         <li>Usability testing</li>
-        <li>Web analytics</li>
+        <li>Web metrics and analytics</li>
       </ul>
 
       <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -217,15 +213,15 @@ import Lightbox from '../components/Lightbox.astro';
       </div>
 
       <p class="mt-4">
-        We spent several sprints mocking up and testing key user flows and improved documentation for a single API, AB2D. We could extend these learnings and to other APIs down the road to save time and to reinforce standardized practices.
+        We spent several sprints mocking up and testing key user flows and improved documentation for a single website: <Link text="ab2d.cms.gov" href="https://ab2d.cms.gov" />. We could extend these learnings and to other API websites down the road to save time and to reinforce standardized practices.
       </p>
 
       <p class="mt-4">
-        Crucially, we kept in close contact with Product Managers and stakeholders from other APIs throughout prototyping. This ensured that designs were universalized for each API's unique features and user needs.
+        Crucially, we kept in close contact with Product Managers and stakeholders from other API teams throughout prototyping. This ensured that designs were universalized to accomodate each API's unique features and user needs.
       </p>
 
       <p class="mt-4">
-       In testing, the majority of users sorted 34/36 task flows into the same category/page. This validated the robustness and accuracy of the new information architecture.
+       In testing, the majority of users sorted 34 out of 36 task flows onto the same category, which represented a webpage. This validated the robustness and accuracy of the new information architecture.
       </p>
 
       <figure class="bg-white rounded-md shadow overflow-hidden my-6">
@@ -244,18 +240,17 @@ import Lightbox from '../components/Lightbox.astro';
       <h4 class="heading text-slate-900 uppercase tracking-wider font-semibold py-3">Framework</h4>
       <ul class="list-disc list-outside pl-6 space-y-1">
         <li><Link text="Ruby + Jekyll + USWDS" href="https://github.com/navapbc/template-jekyll-uswds" /></li>
-        <li>Later, Blue Button became one of the first government websites to move to <Link text="Astro" href="astro" /></li>
+        <li>Later, Blue Button became one of the first .gov websites to build with <Link text="Astro" href="astro" />.</li>
       </ul>
 
       <h4 class="heading text-slate-900 uppercase tracking-wider font-semibold py-3">Approach</h4>
 
       <p>
-        Designs were implemented in a staging environment on a page-by-page basis,
-        allowing for simultaneous, agile development.
+        Approved content and mock-ups were implemented in a staging environment on a page-by-page basis, allowing for simultaneous, agile development alongside design.
       </p>
 
       <p class="mt-4">
-        We used <Link text="Markdown" href="https://www.markdownguide.org" /> and <Link text="TypeScript" href="https://www.typescriptlang.org" /> to create intuitive code components that extended USWDS within guardrails, allowing non-technical teammates to contribute to code.
+        We used <Link text="Markdown" href="https://www.markdownguide.org" /> and <Link text="TypeScript" href="https://www.typescriptlang.org" /> to create intuitive code components that extended USWDS within guardrails, allowing non-technical teammates to easily contribute code. This was heavily influenced by GOV.UK's <Link text="Govspeak" href="https://govspeak-preview.publishing.service.gov.uk/guide" />.
       </p>
 
       <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -279,7 +274,7 @@ import Lightbox from '../components/Lightbox.astro';
       </div>
 
       <p class="mt-4">
-        After all pages had been implemented and user-tested, the full website was publicly launched at <Link text="https://ab2d.cms.gov/" href="https://ab2d.cms.gov/" />.
+        After all pages had been implemented and user-tested, the full website was publicly launched. See the <Link text="GitHub repository" href="https://github.com/CMSgov/ab2d-website" />.
       </p>
     </section>
 
@@ -287,26 +282,29 @@ import Lightbox from '../components/Lightbox.astro';
       <h3 class="text-2xl font-bold mb-2">Phase 5: Standardized Implementation</h3>
 
       <p class="mt-4">
-        Since information architecture, layouts, and front-end templates were already built and validated by users, we were able to skip the design stage altogether and implement new content directly in staging. 
+        Since information architecture, layouts, and front-end templates were already built and validated by users, we were able to skip the design stage altogether for the remaining API websites. New content was implemeted directly in staging, without compromising on accessibility or user experience.
       </p>
         
       <p class="mt-4">
-        <strong>We developed the following sites in weeks instead of months, then days instead of weeks.</strong>
+        <strong>We built the following sites in weeks instead of months, then days instead of weeks.</strong> See the <Link text="BCDA GitHub repository" href="https://github.com/CMSgov/bcda-static-site" /> and the <Link text="Blue Button GitHub repository" href="https://github.com/CMSgov/bluebutton-site-static" />.
       </p>
 
-      <ul class="list-disc list-outside pl-6 space-y-1 mt-4">
-        <li>3 websites launched in 2025. Scroll back up to <a class="underline text-orange-700 hover:text-orange-800" href="#highlights">the highlights.</a></li>
+      <h4 class="heading text-slate-900 uppercase tracking-wider font-semibold py-3">Outcomes</h4>
+
+      <ul class="list-disc list-outside pl-6 space-y-1">
+        <li>3 websites launched in 2025</li>
         <li>
-          Other teams at CMS are using these open-source, standard templates to independently spin up similar websites.
+          Other federal agencies are using these standard templates to independently spin up similar dveloper-focused websites, proving scalability.
         </li>
         <li>
-          Reduction in support requests from users following the release of improved sites and documentation.
+          Reduction in support requests from users following the release of new sites and documentation.
         </li>
         <li>
-          Nava published a <Link text="Case Study" href="https://www.navapbc.com/case-studies/improving-medicare-coordination-api" /> about this effort in the Annual Public Benfit Report.
+          Nava published a <Link text="Case Study" href="https://www.navapbc.com/case-studies/improving-medicare-coordination-api" /> about this effort as part of the Annual Public Benfit Report.
         <li>
           Non-technical teammates have been able to successfully update and contribute to the API websites, proving maintainability. One content writer even made <Link text="a blog" href="https://bcda.cms.gov/announcements.html" />.
         </li>
+        <li>Return to the top of the page to revisit <a class="underline text-orange-700 hover:text-orange-800" href="#highlights">the highlights.</a></li>
       </ul>
 
       <figure class="bg-white rounded-md shadow overflow-hidden my-6">
